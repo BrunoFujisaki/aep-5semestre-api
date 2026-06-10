@@ -1,0 +1,1 @@
+CREATE TABLE solicitacoes (id UUID PRIMARY KEY, protocolo VARCHAR(20) UNIQUE, categoria VARCHAR(50), descricao TEXT, localizacao VARCHAR(255), prioridade VARCHAR(50), status VARCHAR(50), data_criacao TIMESTAMP, data_atualizacao TIMESTAMP, usuario_id UUID, anonima BOOLEAN);
