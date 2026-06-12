@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import obeservacao.api.dto.AuthDto;
 import obeservacao.api.dto.UserCreateDto;
 import obeservacao.api.dto.UserDataDto;
+import obeservacao.api.dto.UserListDto;
 import obeservacao.api.infra.exception.UserException;
 import obeservacao.api.infra.security.TokenJwtDTO;
 import obeservacao.api.infra.security.TokenService;
@@ -14,6 +15,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +43,11 @@ public class UserService {
         }
         var passwordHash = new BCryptPasswordEncoder().encode(dto.password());
         return new UserDataDto(userRepository.save(new User(dto, passwordHash)));
+    }
+
+    public List<UserListDto> listUsers() {
+        return userRepository.findAll().stream()
+                .map(UserListDto::new)
+                .toList();
     }
 }

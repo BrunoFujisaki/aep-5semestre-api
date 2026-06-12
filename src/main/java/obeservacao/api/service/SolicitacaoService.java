@@ -1,5 +1,6 @@
 package obeservacao.api.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import obeservacao.api.dto.SolicitacaoCreateDto;
 import obeservacao.api.dto.SolicitacaoUpdateDto;
@@ -52,7 +53,7 @@ public class SolicitacaoService {
 
     public Solicitacao buscarPorId(UUID id) {
         return repository.findById(id)
-                .orElseThrow(() -> new SolicitacaoException("Solicitacao nao encontrada."));
+                .orElseThrow(() -> new EntityNotFoundException("Solicitacao nao encontrada."));
     }
 
     public List<Solicitacao> buscarPorUsuario(UUID usuarioId) {

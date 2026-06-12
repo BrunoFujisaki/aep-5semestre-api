@@ -6,19 +6,22 @@ import lombok.RequiredArgsConstructor;
 import obeservacao.api.dto.AuthDto;
 import obeservacao.api.dto.UserCreateDto;
 import obeservacao.api.dto.UserDataDto;
+import obeservacao.api.dto.UserListDto;
 import obeservacao.api.infra.security.TokenJwtDTO;
 import obeservacao.api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@SecurityRequirements
 public class AuthController {
     private final UserService userService;
 
@@ -34,5 +37,12 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.signInUser(dto));
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserListDto>> listUsers() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.listUsers());
     }
 }
