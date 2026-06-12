@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/sign-up", "/auth/sign-in").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/users").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/admin/metrics/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/solicitacoes/anonimas").permitAll()
                         .requestMatchers(HttpMethod.GET, "/solicitacoes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/solicitacoes/usuario/*").hasAnyRole("ADMIN", "USER")

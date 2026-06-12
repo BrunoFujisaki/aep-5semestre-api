@@ -1,6 +1,5 @@
 package obeservacao.api.controller;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import obeservacao.api.dto.AuthDto;
@@ -8,9 +7,11 @@ import obeservacao.api.dto.UserCreateDto;
 import obeservacao.api.dto.UserDataDto;
 import obeservacao.api.dto.UserListDto;
 import obeservacao.api.infra.security.TokenJwtDTO;
+import obeservacao.api.model.User;
 import obeservacao.api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,5 +45,12 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.listUsers());
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDataDto> me(@AuthenticationPrincipal User user) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new UserDataDto(user));
     }
 }

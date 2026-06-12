@@ -7,6 +7,7 @@ import obeservacao.api.dto.SolicitacaoUpdateDto;
 import obeservacao.api.infra.exception.SolicitacaoException;
 import obeservacao.api.model.Solicitacao;
 import obeservacao.api.model.User;
+import obeservacao.api.model.enums.StatusSolicitacao;
 import obeservacao.api.model.enums.UserRole;
 import obeservacao.api.repository.SolicitacaoRepository;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,9 @@ public class SolicitacaoService {
         Solicitacao solicitacao = buscarPorId(id);
         if (solicitacao.getUsuario() == null || !solicitacao.getUsuario().getId().equals(user.getId())) {
             throw new SolicitacaoException("Voce pode excluir apenas solicitacoes cadastradas em seu proprio usuario.");
+        }
+        if (solicitacao.getStatus() != StatusSolicitacao.ABERTO) {
+            throw new SolicitacaoException("Apenas solicitacoes com status ABERTO podem ser excluidas.");
         }
 
         repository.delete(solicitacao);
