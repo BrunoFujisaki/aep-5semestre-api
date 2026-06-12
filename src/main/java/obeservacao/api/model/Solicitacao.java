@@ -61,8 +61,8 @@ public class Solicitacao {
         this.dataAtualizacao = this.dataCriacao;
     }
 
-    public void atualizarStatus(StatusSolicitacao status) {
+    public void atualizarStatus(StatusSolicitacao status, LocalDateTime dataAtualizacao) {
         this.status = status;
-        this.dataAtualizacao = LocalDateTime.now();
+        this.dataAtualizacao = dataAtualizacao;
     }
 }

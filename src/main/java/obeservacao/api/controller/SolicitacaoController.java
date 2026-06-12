@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import obeservacao.api.dto.SolicitacaoCreateDto;
 import obeservacao.api.dto.SolicitacaoResponseDto;
+import obeservacao.api.dto.SolicitacaoStatusHistoryResponseDto;
 import obeservacao.api.dto.SolicitacaoUpdateDto;
 import obeservacao.api.model.User;
 import obeservacao.api.service.SolicitacaoService;
@@ -45,6 +46,12 @@ public class SolicitacaoController {
     @GetMapping("/{id}")
     public SolicitacaoResponseDto buscarPorId(@PathVariable UUID id) {
         return new SolicitacaoResponseDto(service.buscarPorId(id));
+    }
+
+    @GetMapping("/{id}/status-history")
+    public SolicitacaoStatusHistoryResponseDto buscarHistoricoStatus(@PathVariable UUID id,
+                                                                     @AuthenticationPrincipal User user) {
+        return service.buscarHistoricoStatus(id, user);
     }
 
     @GetMapping("/usuario/{usuarioId}")

@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/solicitacoes/anonimas").permitAll()
                         .requestMatchers(HttpMethod.GET, "/solicitacoes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/solicitacoes/usuario/*").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/solicitacoes/*/status-history").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.GET, "/solicitacoes/*").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.PUT, "/solicitacoes/*").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/solicitacoes/*").hasRole("USER")
