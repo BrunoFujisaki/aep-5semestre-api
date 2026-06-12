@@ -30,9 +30,22 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/sign-up", "/auth/sign-in").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/solicitacoes/anonimas").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/solicitacoes").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/solicitacoes/usuario/*").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/solicitacoes/*").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.PUT, "/solicitacoes/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/solicitacoes/*").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/solicitacoes").hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
