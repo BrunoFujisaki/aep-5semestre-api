@@ -3,10 +3,10 @@ package obeservacao.api.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import obeservacao.api.model.enums.Categoria;
 import obeservacao.api.model.enums.Prioridade;
 import obeservacao.api.model.enums.StatusSolicitacao;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,12 +14,11 @@ import java.util.UUID;
 @Entity
 @Table(name = "solicitacoes")
 @Getter
-@Setter
 @NoArgsConstructor
 public class Solicitacao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     private UUID id;
 
     @Column(unique = true)
@@ -46,17 +45,24 @@ public class Solicitacao {
     @ManyToOne
     private User usuario;
 
-    private Boolean anonima;
-
-    @PrePersist
-    void pre() {
-        protocolo = UUID.randomUUID()
+    public Solicitacao(Categoria categoria, String descricao, String localizacao,
+                       Prioridade prioridade, User usuario) {
+        this.categoria = categoria;
+        this.descricao = descricao;
+        this.localizacao = localizacao;
+        this.prioridade = prioridade;
+        this.usuario = usuario;
+        this.protocolo = UUID.randomUUID()
                 .toString()
                 .substring(0, 8)
                 .toUpperCase();
+        this.status = StatusSolicitacao.ABERTO;
+        this.dataCriacao = LocalDateTime.now();
+        this.dataAtualizacao = this.dataCriacao;
+    }
 
-        status = StatusSolicitacao.ABERTO;
-        dataCriacao = LocalDateTime.now();
-        dataAtualizacao = LocalDateTime.now();
+    public void atualizarStatus(StatusSolicitacao status) {
+        this.status = status;
+        this.dataAtualizacao = LocalDateTime.now();
     }
 }
